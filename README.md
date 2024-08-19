@@ -25,8 +25,12 @@ Ensure the following environment variables are set in your Azure Function App se
 
 Add the following variables to your Azure App Configuration:
 
-- **MongoUri_ClientAPI**: The connection string for your MongoDB instance.
+- **MongoUri_FOREX_EVENTHUB_TRIGGER**: The connection string for your MongoDB instance.
   - Example: `mongodb+srv://username:password@cluster0.mongodb.net/?retryWrites=true&w=majority&appName=your_app_name`
+- **DatabaseName_FOREX_EVENTHUB_TRIGGER**: The name of the MongoDB database.
+  - Example: `forex_db`
+- **CollectionName_FOREX_EVENTHUB_TRIGGER**: The name of the MongoDB collection.
+  - Example: `forex_events`
 
 ## How It Works
 

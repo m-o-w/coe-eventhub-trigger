@@ -13,6 +13,8 @@ log_prefix = f"{interface_id} [{request_id}]"
 logging.info(f'{log_prefix}: ------------Start of Function App------------')
 app = func.FunctionApp()
 
+app_config_manager = AppConfigManager()
+
 @app.function_name(name="coe_eventhub_forex_trigger")
 @app.event_hub_message_trigger(arg_name="azeventhub", 
                                event_hub_name=os.getenv("EVENT_HUB_NAME_FOREX_EVENTHUB_TRIGGER"), 
@@ -21,10 +23,11 @@ def forex_eventhub_trigger(azeventhub: func.EventHubEvent):
     logging.info(f'{log_prefix}: Python EventHub trigger processed an event: {azeventhub.get_body().decode("utf-8")}')
     
     try:
-        app_config_manager = AppConfigManager()
-        mongo_uri = app_config_manager.get_configuration_value("MongoUri_FOREX_EVENTHUB_TRIGGER")
-        database_name = app_config_manager.get_configuration_value("DatabaseName_FOREX_EVENTHUB_TRIGGER")
-        collection_name = app_config_manager.get_configuration_value("CollectionName_FOREX_EVENTHUB_TRIGGER")
+        # Retrieve cached configuration values
+        config = app_config_manager.get_cached_config()
+        mongo_uri = config["mongo_uri"]
+        database_name = config["database_name"]
+        collection_name = config["collection_name"]
         
         logging.info(f'{log_prefix}: Retrieved MongoUri: {mongo_uri}')
         logging.info(f'{log_prefix}: Retrieved DatabaseName: {database_name}')
